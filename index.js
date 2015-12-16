@@ -64,7 +64,7 @@ AfterSunset.prototype.scheduleDevices = function () {
         if (vDev) {
             var timeout = element.delay*60000;
             setTimeout(
-            _.bind(self.switchMode,self,vDev,element.level),
+            _.bind(self.switchDevice,self,vDev,element.level),
             timeout);
         }
     });    
