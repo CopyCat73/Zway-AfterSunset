@@ -1,0 +1,8 @@
+{
+  "title": "AfterSunset",
+  "description": "Switch one or more lights on a delay after sunset notification.",
+  "setlevel_label": "Set level",
+  "setdelay_label": "Set delay (in minutes)",
+  "selectonoffdevices": "Select on/off devices to switch",
+  "selectdimmerdevices": "Select dimmer devices to switch"
+ }

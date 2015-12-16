@@ -1,0 +1,118 @@
+{
+   "author" : "CopyCat73",
+   "category" : "basic_gateway_modules",
+   "defaults" : {
+      "description" : "__description__",
+      "title" : "__title__"
+   },
+   "dependencies" : [],
+   "homepage" : "https://github.com/CopyCat73",
+   "icon" : "icon.png",
+   "maturity" : "stable",
+   "moduleName" : "AfterSunset",
+   "options" : {
+      "fields" : {
+         "onofflights" : {
+            "fields" : {
+               "item" : {
+                  "fields" : {
+                     "device" : {
+                        "datasource" : "namespaces",
+                        "field" : "optionLabels",
+                        "label" : "",
+                        "optionLabels" : "namespaces:devices_switchBinary:deviceName",
+                        "type" : "select"
+                     },
+                     "delay" : {
+                        "label" : "__setdelay_label__"
+                     }  
+                  }
+               }
+            },
+            "label" : "__selectonoffdevices__",
+            "order" : 1
+         },         
+         "dimmers" : {
+            "fields" : {
+               "item" : {
+                  "fields" : {
+                     "device" : {
+                        "datasource" : "namespaces",
+                        "field" : "optionLabels",
+                        "label" : "",
+                        "optionLabels" : "namespaces:devices_switchMultilevel:deviceName",
+                        "type" : "select"
+                     },                    
+                     "level" : {
+                        "label" : "__setlevel_label__"
+                     },
+                     "delay" : {
+                        "label" : "__setdelay_label__"
+                     }                     
+                  }
+               }
+            },
+            "label" : "__selectdimmerdevices__",
+            "order" : 2
+         }
+      }
+   },
+   "repository" : {
+      "source" : "https://github.com/CopyCat73/Zway-AfterSunset",
+      "type" : "git"
+   },
+   "schema" : {
+      "properties" : {
+         "onofflights" : {
+            "items" : {
+               "properties" : {
+                  "device" : {
+                     "datasource" : "namespaces",
+                     "enum" : "namespaces:devices_switchBinary:deviceId",
+                     "field" : "enum",
+                     "required" : true
+                  },                 
+                  "delay" : {
+                     "maximum" : 60,
+                     "minimum" : 1,
+                     "required" : true,
+                     "type" : "integer"
+                  }
+               },
+               "type" : "object"
+            },
+            "type" : "array"
+         },  
+         "dimmers" : {
+            "items" : {
+               "properties" : {
+                  "device" : {
+                     "datasource" : "namespaces",
+                     "enum" : "namespaces:devices_switchMultilevel:deviceId",
+                     "field" : "enum",
+                     "required" : true
+                  },                 
+                  "delay" : {
+                     "maximum" : 60,
+                     "minimum" : 1,
+                     "required" : true,
+                     "type" : "integer"
+                  },
+                  "level" : {
+                     "maximum" : 99,
+                     "minimum" : 0,
+                     "required" : true,
+                     "type" : "integer"
+                  }
+               },
+               "type" : "object"
+            },
+            "type" : "array"
+         }       
+      },
+      "required" : true,
+      "type" : "object"
+   },
+   "singleton" : true,
+   "version" : "1.00"
+}
