@@ -12,6 +12,14 @@
    "moduleName" : "AfterSunset",
    "options" : {
       "fields" : {
+         "daylightdevice" : {
+            "datasource" : "namespaces",
+            "field" : "optionLabels",
+            "label" : "__selectdaylightdevice_header__",
+            "optionLabels" : "namespaces:devices_sensorBinary:deviceName",
+            "type" : "select",
+            "order" : 1
+         },
          "onofflights" : {
             "fields" : {
                "item" : {
@@ -30,7 +38,7 @@
                }
             },
             "label" : "__selectonoffdevices__",
-            "order" : 1
+            "order" : 2
          },         
          "dimmers" : {
             "fields" : {
@@ -53,7 +61,7 @@
                }
             },
             "label" : "__selectdimmerdevices__",
-            "order" : 2
+            "order" : 3
          }
       }
    },
@@ -63,6 +71,12 @@
    },
    "schema" : {
       "properties" : {
+         "daylightdevice" : {
+            "datasource" : "namespaces",
+            "enum" : "namespaces:devices_sensorBinary:deviceId",
+            "field" : "enum",
+            "required" : true
+         },       
          "onofflights" : {
             "items" : {
                "properties" : {
@@ -113,6 +127,6 @@
       "required" : true,
       "type" : "object"
    },
-   "singleton" : true,
+   "singleton" : false,
    "version" : "1.00"
 }

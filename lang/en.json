@@ -1,6 +1,7 @@
 {
   "title": "AfterSunset",
   "description": "Switch one or more lights on a delay after sunset notification.",
+  "selectdaylightdevice_header": "Select the daylight module sensor",
   "setlevel_label": "Set level",
   "setdelay_label": "Set delay (in minutes)",
   "selectonoffdevices": "Select on/off devices to switch",

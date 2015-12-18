@@ -4,7 +4,7 @@ Zway Automation module for switching devices a set period after sunset
 
 # Configuration
 
-This module uses the Daylight app as trigger, please install it first. 
+This module uses the Daylight app as trigger, please install it first and select it in the configuration. 
 
 
 # License

@@ -12,6 +12,8 @@ function AfterSunset (id, controller) {
     // Call superconstructor first (AutomationModule)
     AfterSunset.super_.call(this, id, controller);
     
+    this.timer = undefined;
+    
 
 }
 
@@ -26,8 +28,16 @@ _module = AfterSunset;
 AfterSunset.prototype.init = function (config) {
     AfterSunset.super_.prototype.init.call(this, config);
     
-    this.controller.on("daylight.sunset", this.scheduleDevices);
-       
+    var self = this;
+    
+    console.log("[AfterSunset] starting");
+        
+    var intervalTime    = 60000;
+    
+    self.timer = setInterval(function() {
+        self.checkDevices();
+    }, intervalTime);
+   
 };
     
 
@@ -36,8 +46,11 @@ AfterSunset.prototype.stop = function () {
     
     var self = this;
     
-    this.controller.off("daylight.sunset", this.scheduleDevices);
-    
+    if (self.timer) {
+        clearInterval(self.timer);
+        self.timer = undefined;
+    }
+      
     AfterSunset.super_.prototype.stop.call(this);
  
 };
@@ -46,28 +59,44 @@ AfterSunset.prototype.stop = function () {
 // --- Module methods
 // ----------------------------------------------------------------------------
 
-AfterSunset.prototype.scheduleDevices = function () {
+AfterSunset.prototype.checkDevices = function () {
+    
+    //console.log("[AfterSunset] check");
     var self = this;
+    var now = new Date();
+    
+    var dDev = self.controller.devices.get(this.config.daylightdevice);
+    if (dDev) {
+        var sunset = dDev.get("metrics:sunset");
+        var sunsetDate = new Date, time = sunset.split(/\:|\-/g);
+        sunsetDate.setHours(time[0]);
+        sunsetDate.setMinutes(time[1]);
+        
+        _.each(self.config.onofflights,function(element) {
+            var vDev = self.controller.devices.get(element.device);
+            if (vDev) {
+                var deviceDate = new Date(sunsetDate.getTime() + (element.delay * 60000));
+                if (deviceDate.getHours() === now.getHours() && deviceDate.getMinutes() === now.getMinutes()){
+                    self.switchDevice(vDev,'on');
+                }
+            }
+        });
+                
+        _.each(self.config.dimmers,function(element) {
+            var vDev = self.controller.devices.get(element.device);
+            if (vDev) {
+                var deviceDate = new Date(sunsetDate.getTime() + (element.delay * 60000));
+                if (deviceDate.getHours() === now.getHours() && deviceDate.getMinutes() === now.getMinutes()){
+                    self.switchDevice(vDev,element.level);
+                }
+            }
+        });
+        
+    }
+    else {
+        console.error("[AfterSunset] error starting module: daylightdevice not found");
+    }
 
-    _.each(self.config.onofflights,function(element) {
-        var vDev = self.controller.devices.get(element.device);
-        if (vDev) {
-            var timeout = element.delay*60000;
-            setTimeout(
-            _.bind(self.switchDevice,self,vDev,'on'),
-            timeout);
-        }
-    });
-            
-    _.each(self.config.dimmers,function(element) {
-        var vDev = self.controller.devices.get(element.device);
-        if (vDev) {
-            var timeout = element.delay*60000;
-            setTimeout(
-            _.bind(self.switchDevice,self,vDev,element.level),
-            timeout);
-        }
-    });    
 }
 
 AfterSunset.prototype.switchDevice = function (device,state) {
@@ -76,7 +105,6 @@ AfterSunset.prototype.switchDevice = function (device,state) {
        device.performCommand("on");
     }
     else {
-        device.set("metrics:level",state);
+        device.performCommand('exact',{ level: state });
     }
-
 }
